@@ -6,15 +6,24 @@ import javax.validation.constraints.Size;
 
 @Entity //TODO JPA Entity semantics
 @Inheritance
-@DiscriminatorColumn(name="ACCOUNT_TYPE")
+@DiscriminatorColumn(name = "ACCOUNT_TYPE")
 public abstract class Account {
-    /** TODO Validation Framework */
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY) private long id;
-    @Email @Size(max = 50) private String email;
+    /**
+     * TODO Validation Framework
+     */
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
+    @Email
+    @Size(max = 50)
+    private String email;
     private double amount;
 
-    /** No-arg constructor needed by JPA */
-    public Account() { }
+    /**
+     * No-arg constructor needed by JPA
+     */
+    public Account() {
+    }
 
     public Account(double amount, String email) {
         this.amount = amount;
@@ -29,7 +38,13 @@ public abstract class Account {
         return amount;
     }
 
-    /** TODO Mutable state */
+    public String getEmail() {
+        return email;
+    }
+
+    /**
+     * TODO Mutable state
+     */
     public void setAmount(double amount) {
         this.amount = amount;
     }
