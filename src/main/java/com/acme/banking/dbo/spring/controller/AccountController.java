@@ -2,6 +2,7 @@ package com.acme.banking.dbo.spring.controller;
 
 import com.acme.banking.dbo.spring.dao.AccountRepository;
 import com.acme.banking.dbo.spring.domain.Account;
+import com.acme.banking.dbo.spring.domain.CheckingAccount;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -9,6 +10,7 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -65,7 +67,7 @@ public class AccountController {
         try {
             accounts.deleteById(id);
             return new ResponseEntity<>(HttpStatus.OK);
-        } catch (Exception e) {
+        } catch (EmptyResultDataAccessException e) {
             throw new ResponseStatusException(
                     HttpStatus.NOT_FOUND,
                     "Account not found id: " + id, e
@@ -74,8 +76,8 @@ public class AccountController {
     }
 
     @PostMapping(value = "/accounts", headers = "X-API-VERSION=1")
-    public ResponseEntity<Account> createAccount(@RequestBody @Valid Account account) {
-        if (accounts.findByEmail(account.getEmail()) != null) {
+    public ResponseEntity<Account> createAccount(@RequestBody Account account) {
+        if (!accounts.findByEmail(account.getEmail()).isEmpty()) {
             throw new ResponseStatusException(
                     HttpStatus.CONFLICT,
                     "Account already exist: " + account

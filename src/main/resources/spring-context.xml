@@ -21,7 +21,7 @@
     <!-- TODO Spring Boot for Spring auto-configurated context with modules -->
     <beans:bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
         <beans:property name="driverClassName" value="org.apache.derby.jdbc.EmbeddedDriver"/>
-        <beans:property name="url" value="jdbc:derby:target/db;create=true"/>
+        <beans:property name="url" value="jdbc:derby:target/db;create=true"/> <!-- target => memory -->
     </beans:bean>
 
     <beans:bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean" depends-on="dataSource">

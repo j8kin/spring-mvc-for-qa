@@ -7,7 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.ImportResource;
-
+// java -jar target/dbo-<tab>
 @SpringBootApplication
 @ImportResource("classpath:spring-context.xml")
 public class Application {

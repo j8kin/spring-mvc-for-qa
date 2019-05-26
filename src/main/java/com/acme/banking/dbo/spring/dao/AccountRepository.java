@@ -1,7 +1,6 @@
 package com.acme.banking.dbo.spring.dao;
 
 import com.acme.banking.dbo.spring.domain.Account;
-import javafx.print.Collation;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

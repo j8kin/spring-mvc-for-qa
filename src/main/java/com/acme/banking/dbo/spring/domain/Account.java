@@ -1,12 +1,25 @@
 package com.acme.banking.dbo.spring.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.Size;
 
+@ApiModel(subTypes = {SavingAccount.class, CheckingAccount.class})
 @Entity //TODO JPA Entity semantics
-@Inheritance
-@DiscriminatorColumn(name = "ACCOUNT_TYPE")
+@Inheritance @DiscriminatorColumn(name="ACCOUNT_TYPE")
+@JsonPropertyOrder({ "id", "type", "email", "amount" }) //TODO Jackson annotations semantics: https://www.baeldung.com/jackson-annotations & https://github.com/FasterXML/jackson-annotations
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonSubTypes({
+        @JsonSubTypes.Type(value = SavingAccount.class, name = "S"),
+        @JsonSubTypes.Type(value = CheckingAccount.class, name = "C")
+})
 public abstract class Account {
     /**
      * TODO Validation Framework
@@ -41,6 +54,10 @@ public abstract class Account {
     public String getEmail() {
         return email;
     }
+
+    @ApiModelProperty(allowableValues = "S,C")
+    @JsonIgnore
+    public abstract String getType();
 
     /**
      * TODO Mutable state
